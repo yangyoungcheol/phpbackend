@@ -48,13 +48,22 @@ final class User
         $count = count($rs);
         $user_idx = $rs[0]["idx"];
 
+        if($user_idx > 0){
+            $res = [
+                'message' => 'OK',
+                'result' => 'OK',
+                'user_idx' => $user_idx,
+                'count' => $count,
+            ];
+        }else{
+            $res = [
+                'message' => 'Fail',
+                'result' => 'Fail',
+                'user_idx' => $user_idx,
+                'count' => $count,
+            ];
 
-        $res = [
-            'message' => 'OK',
-            'result' => 'OK',
-            'user_idx' => $user_idx,
-            'count' => $count,
-        ];
+        }
 
         return $response->withJson($res);
     }
@@ -63,16 +72,55 @@ final class User
     {
         //echo 'CUSTOMERS';
         $data = $request->getParsedBody();
-        $email = $data->get('email');
-        $passwd = $data->get('passwd');
+        $email = $data["email"];
+        $name = $data["name"];
+        $passwd = $data["passwd"];
 
-        $rs = [
-            'result' => [
-                'email' => $email,
-                'passwd' => $passwd,
-            ],
-        ];
+        
+        $db = $this->container->get('db');
 
-        return $response->withJson($rs);
+        $sql = $db->prepare("select count(*) as count from users where email='".$email."'");
+        
+        $rs = $sql->execute();
+        //$rs = $sql->fetch();
+        $count = $rs['count'];
+
+        if($count > 0){
+
+            $rs = [
+                'message' => 'Duplicate email',
+                'result' => 'Fail',
+            ];
+            return $response->withJson($rs);
+
+        }else{
+
+
+            $sql = $db->prepare("insert users set
+            name='".$name."',
+            email='".$email."',
+            passwd='".$passwd."',
+            c_date=now()
+            ");
+
+            $rs = $sql->execute();
+            //$rs = $sql->fetchAll();
+
+            if($rs){
+                $rs = [
+                    'message' => 'OK',
+                    'result' => 'OK',
+                ];
+            }else{
+                $rs = [
+                    'message' => 'Fail',
+                    'result' => 'Fail',
+                ];
+
+            }
+
+            return $response->withJson($rs);
+        }
+
     }
 }

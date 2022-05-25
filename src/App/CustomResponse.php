@@ -11,7 +11,7 @@ final class CustomResponse extends ResponseBase
     public function withJson(
         $data,
         int $status = 200,
-        int $encodingOptions = 0
+        int $encodingOptions = 1
     ): self {
         $json = json_encode($data, $encodingOptions);
 
@@ -28,4 +28,27 @@ final class CustomResponse extends ResponseBase
 
         return $responseWithJson;
     }
+
+    // public function justWrite(
+    //     $data
+    // ): self {
+    //     // $json = json_encode($data, $encodingOptions);
+
+    //     // if ($json === false) {
+    //     //     throw new \RuntimeException(json_last_error_msg(), json_last_error());
+    //     // }
+
+    //     // $this->getBody()->write($json);
+
+    //     //$responseData = $this->getBody()->write($data);
+    //     $res = $this->getBody()->write($data);
+
+    //     // $responseWithJson = $this->withHeader('Content-Type', 'application/json;charset=utf-8');
+    //     // if (isset($status)) {
+    //     //     return $responseWithJson->withStatus($status);
+    //     // }
+
+    //     return $res;
+    // }
+
 }

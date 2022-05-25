@@ -31,3 +31,18 @@ services:
     volumes:
      - ./:/var/www/html
 
+  mysql:
+    image: mysql:5.7
+    ports:
+      - 33060:3306
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: slim4_api_skeleton
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 
+      MYSQL_ROOT_PASSWORD: 
+    volumes:
+      - my-data:/var/lib/mysql
+
+volumes:
+  my-data:
