@@ -3,7 +3,7 @@ version: '3'
 services:
   nginx:
     image: nginx:latest
-    container_name: slim4-api-skeleton-nginx-container
+    container_name: nginx-for-phpclass
     ports:
       - "8090:80"
     volumes:
@@ -14,13 +14,13 @@ services:
 
   php-fpm:
     build: ./docker/php7
-    container_name: slim4-api-skeleton-php-container
+    container_name: php-for-phpclass
     # links:
     #   - mysql
     environment:
       - PHP_FPM_ENABLE=1
       - PHP_FPM_SERVER_ADDR=php
-      - PHP_FPM_SERVER_PORT=9000
+      - PHP_FPM_SERVER_PORT=8090
       - PHP_FPM_TIMEOUT=${HTTPD_TIMEOUT_TO_PHP_FPM:-180}
       # - DB_HOST=mysql
       # - DB_NAME=slim4_api_skeleton
@@ -31,3 +31,8 @@ services:
     volumes:
      - ./:/var/www/html
 
+  # vuefront:
+  #   build: ../vuefront/
+  #   container_name: vue-for-phpclass
+  #   ports:
+  #     - "80:80"

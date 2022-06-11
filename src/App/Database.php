@@ -6,7 +6,7 @@ $container['db'] = static function (): PDO {
     $dsn = sprintf(
         'mysql:host=%s;dbname=%s;port=%s;charset=utf8',
         //$_SERVER['DB_HOST'],
-        "ec2-3-34-199-245.ap-northeast-2.compute.amazonaws.com",
+        "3.36.120.83",
         "phpclass",
         "3306",
         //$_SERVER['DB_NAME'],

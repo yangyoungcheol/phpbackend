@@ -82,7 +82,7 @@ final class User
         $sql = $db->prepare("select count(*) as count from users where email='".$email."'");
         
         $rs = $sql->execute();
-        //$rs = $sql->fetch();
+        $rs = $sql->fetch();
         $count = $rs['count'];
 
         if($count > 0){
@@ -123,4 +123,83 @@ final class User
         }
 
     }
+
+
+    public function getUserInfo(Request $request, Response $response): Response
+    {
+
+        $data = $request->getQueryParams();
+        $user_idx = $data["user_idx"];
+
+        $db = $this->container->get('db');
+
+        $sql = $db->prepare("select * from users where idx=".$user_idx);
+        
+        $rs = $sql->execute();
+        $rs = $sql->fetchAll();
+
+        if(count($rs) > 0){
+
+            $sql2 = $db->prepare("select count(*) as count from posts where user_idx=".$user_idx);
+            $rs2 = $sql2->execute();
+            $rs2 = $sql2->fetchAll();
+            $post_count = $rs2[0]['count'];
+
+
+            $sql2 = $db->prepare("select count(*) as count from follow where base_idx=".$user_idx);
+            $rs2 = $sql2->execute();
+            $rs2 = $sql2->fetchAll();
+            $follower = $rs2[0]['count'];
+
+            $sql2 = $db->prepare("select count(*) as count from follow where from_idx=".$user_idx);
+            $rs2 = $sql2->execute();
+            $rs2 = $sql2->fetchAll();
+            $following = $rs2[0]['count'];
+
+            $sendData = [
+                'message' => 'OK',
+                // 'result' => 'OK',
+                'result' => count($rs),
+                'name' => $rs[0]['name'],
+                'email' => $rs[0]['email'],
+                'post_count' => $post_count,
+                'follower' => $follower,
+                'following' => $following
+            ];
+            return $response->withJson($sendData);
+        }
+    }
+
+
+    public function getFollowChk(Request $request, Response $response): Response
+    {
+
+        $data = $request->getQueryParams();
+        $user_idx = $data["user_idx"];
+        $target_idx = $data['target_idx'];
+
+        $db = $this->container->get('db');
+
+        $sql = $db->prepare("
+        select count(*) as count
+        from follow
+        where base_idx=".$target_idx."
+        and from_idx=".$user_idx."
+        ");
+
+        $rs = $sql->execute();
+        $rs = $sql->fetch();
+        
+        $sendData = [
+            'message' => 'OK',
+            'result' => 'OK',
+            // 'result' => count($rs),
+            'isFollow' => $rs['count'],
+        ];
+        return $response->withJson($sendData);
+
+    }
+
+
+
 }

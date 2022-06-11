@@ -157,8 +157,8 @@ final class Posts
     {
         //echo 'CUSTOMERS';
         $data = $request->getQueryParams();
-        $start = ($data["start"]) ? $data["start"] : 0;
-        $limit = ($data["limit"]) ? $data["limit"] : 10;
+        $start = (in_array("start", $data)) ? $data["start"] : 0;
+        $limit = (in_array("limit", $data)) ? $data["limit"] : 10;
         
         $db = $this->container->get('db');
 
