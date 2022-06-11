@@ -5,7 +5,6 @@ RUN apt-get -y update
 # RUN curl -L -C - --progress-bar -o /usr/local/bin/composer https://getcomposer.org/download/latest-1.x/composer.phar
 RUN curl -L -C - --progress-bar -o /usr/local/bin/composer https://getcomposer.org/download/latest-stable/composer.phar
 RUN chmod 755 /usr/local/bin/composer
-# RUN chmod 755 /var/www/html/uploads
 RUN apt-get install -y git
 RUN docker-php-ext-install pdo_mysql mysqli
 # RUN composer start
