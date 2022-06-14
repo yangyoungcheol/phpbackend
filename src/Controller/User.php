@@ -229,7 +229,6 @@ final class User
             ");
 
             $rs2 = $sql2->execute();
-            $rs2 = $sql2->fetch();
 
             $sendData = [
                 'message' => 'OK',
@@ -247,7 +246,6 @@ final class User
             ");
 
             $rs2 = $sql2->execute();
-            $rs2 = $sql2->fetch();
 
             $sendData = [
                 'message' => 'OK',
