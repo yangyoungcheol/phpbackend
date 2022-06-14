@@ -222,14 +222,14 @@ final class User
         
         if($rs['count'] == 0){
             
-            $sql = $db->prepare("
+            $sql2 = $db->prepare("
             insert follow SET
             base_idx=".$target_idx.",
             from_idx=".$user_idx."
             ");
 
-            $rs = $sql->execute();
-            $rs = $sql->fetch();
+            $rs2 = $sql2->execute();
+            $rs2 = $sql2->fetch();
 
             $sendData = [
                 'message' => 'OK',
@@ -240,14 +240,14 @@ final class User
 
         }else{
 
-            $sql = $db->prepare("
+            $sql2 = $db->prepare("
             delete from follow where
             base_idx=".$target_idx." and
             from_idx=".$user_idx."
             ");
 
-            $rs = $sql->execute();
-            $rs = $sql->fetch();
+            $rs2 = $sql2->execute();
+            $rs2 = $sql2->fetch();
 
             $sendData = [
                 'message' => 'OK',
