@@ -201,5 +201,64 @@ final class User
     }
 
 
+    public function setFollow(Request $request, Response $response): Response
+    {
+
+        $data = $request->getParsedBody();
+        $user_idx = $data["user_idx"];
+        $target_idx = $data['target_idx'];
+
+        $db = $this->container->get('db');
+
+        $sql = $db->prepare("
+        select count(*) as count
+        from follow
+        where base_idx=".$target_idx."
+        and from_idx=".$user_idx."
+        ");
+
+        $rs = $sql->execute();
+        $rs = $sql->fetch();
+        
+        if($rs['count'] == 0){
+            
+            $sql = $db->prepare("
+            insert follow SET
+            base_idx=".$target_idx.",
+            from_idx=".$user_idx."
+            ");
+
+            $rs = $sql->execute();
+            $rs = $sql->fetch();
+
+            $sendData = [
+                'message' => 'OK',
+                'result' => 'insert',
+                // 'result' => count($rs),
+            ];
+            return $response->withJson($sendData);
+
+        }else{
+
+            $sql = $db->prepare("
+            delete from follow where
+            base_idx=".$target_idx." and
+            from_idx=".$user_idx."
+            ");
+
+            $rs = $sql->execute();
+            $rs = $sql->fetch();
+
+            $sendData = [
+                'message' => 'OK',
+                'result' => 'delete',
+                // 'result' => count($rs),
+            ];
+            return $response->withJson($sendData);
+        }
+
+    }
+
+
 
 }

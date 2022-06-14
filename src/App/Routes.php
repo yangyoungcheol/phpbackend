@@ -18,3 +18,5 @@ $app->get('/posts/likes', 'App\Controller\Posts:likesProc');
 
 $app->get('/user/info', 'App\Controller\User:getUserInfo');
 $app->get('/follow/check', 'App\Controller\User:getFollowChk');
+$app->post('/follow/set', 'App\Controller\User:setFollow');
+
