@@ -258,5 +258,46 @@ final class User
     }
 
 
+    public function getFollowList(Request $request, Response $response): Response
+    {
+
+        $data = $request->getParsedBody();
+        $user_idx = $data["user_idx"];
+
+        $db = $this->container->get('db');
+
+        $sql = "select u.name as user_name, f.from_idx
+        from follow as f
+        inner join users as u on f.from_idx=u.idx
+        where f.base_idx=".$user_idx." 
+        ";
+        $sql = $db->prepare($sql);
+
+        $rs = $sql->execute();
+        $rs = $sql->fetchAll();
+
+
+
+        $sql = "select u.name as user_name, f.from_idx
+        from follow as f
+        inner join users as u on f.base_idx=u.idx
+        where f.from_idx=".$user_idx." 
+        ";
+        $sql = $db->prepare($sql);
+
+        $rs2 = $sql->execute();
+        $rs2 = $sql->fetchAll();
+
+        $sendData = [
+            'message' => 'OK',
+            'result' => 'OK',
+            'follower' => $rs,
+            'following' => $rs2,
+            // 'result' => count($rs),
+        ];
+        return $response->withJson($sendData);
+
+
+    }
 
 }

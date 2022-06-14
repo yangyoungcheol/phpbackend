@@ -39,7 +39,7 @@ final class Posts
 
         $uploadedFile = $uploadedFiles['upload_img'];
         //$upload_path = __DIR__ . '/uploads';
-        $upload_path = getcwd().'/uploads';
+        $upload_path = '/var/www/html/uploads';
         
         //print($uploadedFile->getError());
         if($uploadedFile->getError() === UPLOAD_ERR_OK){
@@ -209,7 +209,8 @@ final class Posts
         if($count > 0){
             
             // $file = __DIR__  . "/uploads/" . $rs["file_name"];
-            $file = getcwd()."/uploads/" . $rs["file_name"];
+            // $file = getcwd()."/uploads/" . $rs["file_name"];
+            $file = "/var/www/html/uploads/" . $rs["file_name"];
             if (!file_exists($file)) {
                 die("file:$file");
             }
