@@ -266,7 +266,7 @@ final class User
 
         $db = $this->container->get('db');
 
-        $sql = "select u.name as user_name, f.base_idx
+        $sql = "select u.name as user_name, f.from_idx
         from follow as f
         inner join users as u on f.from_idx=u.idx
         where f.base_idx=".$user_idx." 
@@ -278,7 +278,7 @@ final class User
 
 
 
-        $sql = "select u.name as user_name, f.from_idx
+        $sql = "select u.name as user_name, f.base_idx
         from follow as f
         inner join users as u on f.base_idx=u.idx
         where f.from_idx=".$user_idx." 
